@@ -4,7 +4,7 @@
 
   <groupId>com.brothercraft</groupId>
   <artifactId>CHGP</artifactId>
-  <version>1.2.1-SNAPSHOT</version>
+  <version>1.2.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>CHGP</name>
@@ -16,8 +16,12 @@
   
   <repositories>
     <repository>
-      <id>sk89q-mvn2</id>
-      <url>http://mvn2.sk89q.com/repo</url>
+      <id>sk89q-repo</id>
+      <url>http://maven.sk89q.com/repo</url>
+    </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
     </repository>
   </repositories>
 
@@ -31,14 +35,97 @@
     <dependency>
       <groupId>com.sk89q</groupId>
       <artifactId>commandhelper</artifactId>
-      <version>3.3.2-SNAPSHOT</version>
+      <version>3.3.4-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>me.ryanhamshire</groupId>
+      <groupId>com.github.TechFortress</groupId>
       <artifactId>GriefPrevention</artifactId>
-      <version>7.7</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/GriefPrevention.jar</systemPath>
+      <version>16.11.5</version>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <showDeprecation>true</showDeprecation>
+          <source>1.8</source>
+          <target>1.8</target>
+          <compilerArgument>-XDignore.symbol.file</compilerArgument>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+
+        <configuration>
+          <archive>
+            <addMavenDescriptor>false</addMavenDescriptor>
+
+            <manifest>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+
+          </archive>
+        </configuration>
+
+        <version>2.4</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.bsc.maven</groupId>
+        <artifactId>maven-processor-plugin</artifactId>
+        <version>2.2.4</version>
+
+        <executions>
+          <execution>
+            <id>process</id>
+            <phase>process-classes</phase>
+
+            <goals>
+              <goal>process</goal>
+            </goals>
+          </execution>
+        </executions>
+
+        <configuration>
+          <outputDirectory>src/main/generated</outputDirectory>
+
+          <processors>
+            <processor>com.laytonsmith.core.extensions.ExtensionAnnotationProcessor</processor>
+          </processors>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+
+        <executions>
+          <execution>
+            <id>cache-annotations</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+
+        <configuration>
+          <mainClass>com.laytonsmith.PureUtilities.ClassLoading.Annotations.CacheAnnotations</mainClass>
+
+          <arguments>
+            <argument>${basedir}/target/classes</argument>
+            <argument>${basedir}/target/classes</argument>
+          </arguments>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

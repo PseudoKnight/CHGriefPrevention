@@ -24,20 +24,20 @@ public class Util {
 		CArray Ccontainers = new CArray(tar);
 		CArray Caccesors = new CArray(tar);
 		CArray Cmanagers = new CArray(tar);
-		for (int i = 0; i < builders.size(); i++) {
-			Cbuilders.push(new CString(builders.get(i), tar), tar);
+		for(String builder : builders) {
+			Cbuilders.push(new CString(builder, tar), tar);
 		}
 		permissions.set("builders", Cbuilders, tar);
-		for (int i = 0; i < containers.size(); i++) {
-			Ccontainers.push(new CString(containers.get(i), tar), tar);
+		for(String container : containers) {
+			Ccontainers.push(new CString(container, tar), tar);
 		}
 		permissions.set("containers", Ccontainers, tar);
-		for (int i = 0; i < accesors.size(); i++) {
-			Caccesors.push(new CString(accesors.get(i), tar), tar);
+		for(String accesor : accesors) {
+			Caccesors.push(new CString(accesor, tar), tar);
 		}
 		permissions.set("accesors", Caccesors, tar);
-		for (int i = 0; i < managers.size(); i++) {
-			Cmanagers.push(new CString(managers.get(i), tar), tar);
+		for(String manager : managers) {
+			Cmanagers.push(new CString(manager, tar), tar);
 		}
 		permissions.set("managers", Cmanagers, tar);
 		return permissions;

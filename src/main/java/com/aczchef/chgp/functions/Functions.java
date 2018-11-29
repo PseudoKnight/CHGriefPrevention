@@ -6,7 +6,7 @@ import com.laytonsmith.abstraction.MCPlayer;
 import com.laytonsmith.abstraction.bukkit.BukkitMCLocation;
 import com.laytonsmith.abstraction.bukkit.entities.BukkitMCPlayer;
 import com.laytonsmith.annotations.api;
-import com.laytonsmith.core.CHVersion;
+import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.CArray;
@@ -14,7 +14,6 @@ import com.laytonsmith.core.constructs.CBoolean;
 import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.CNull;
 import com.laytonsmith.core.constructs.CString;
-import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.CommandHelperEnvironment;
 import com.laytonsmith.core.environments.Environment;
@@ -25,6 +24,8 @@ import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
 import java.util.ArrayList;
+
+import com.laytonsmith.core.natives.interfaces.Mixed;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
@@ -49,7 +50,7 @@ public class Functions {
 			return false;
 		}
 
-		public Construct exec(Target tar, Environment env, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target tar, Environment env, Mixed... args) throws ConfigRuntimeException {
 			Static.checkPlugin("GriefPrevention", tar);
 			MCLocation l;
 			Claim c;
@@ -82,8 +83,8 @@ public class Functions {
 			return "int {location} Gets the id of a claim at given location.";
 		}
 
-		public CHVersion since() {
-			return CHVersion.V3_3_1;
+		public MSVersion since() {
+			return MSVersion.V3_3_1;
 		}
 	}
 
@@ -102,7 +103,7 @@ public class Functions {
 			return false;
 		}
 
-		public Construct exec(Target tar, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target tar, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			Static.checkPlugin("GriefPrevention", tar);
 			MCLocation l;
 			Claim c;
@@ -188,8 +189,8 @@ public class Functions {
 			return "array {location} Returns various data about a claim.";
 		}
 
-		public CHVersion since() {
-			return CHVersion.V3_3_1;
+		public MSVersion since() {
+			return MSVersion.V3_3_1;
 		}
 	}
 
@@ -208,7 +209,7 @@ public class Functions {
 			return false;
 		}
 
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			Static.checkPlugin("GriefPrevention", t);
 			Player player;
 			CArray array;
@@ -258,8 +259,8 @@ public class Functions {
 			return "boolean {[player,] location} See if a player can build at a given location.";
 		}
 
-		public CHVersion since() {
-			return CHVersion.V3_3_1;
+		public MSVersion since() {
+			return MSVersion.V3_3_1;
 		}
 	}
 }
