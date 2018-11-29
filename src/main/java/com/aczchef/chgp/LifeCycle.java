@@ -14,22 +14,22 @@ import com.laytonsmith.core.extensions.MSExtension;
 @MSExtension("CHGriefPrevention")
 public class LifeCycle extends AbstractExtension {
 
-    public Version getVersion() {
-	return new SimpleVersion(1, 2, 1);
-    }
-
-    @Override
-    public void onShutdown() {
-	System.out.println("[CommandHelper] CHGriefPrevention: De-Initialized");
-    }
-
-    @Override
-    public void onStartup() {
-	try {
-	    Static.checkPlugin("GriefPrevention", Target.UNKNOWN);
-	} catch (Exception e) {
-	    System.out.println("[CommandHelper] CHGriefPrevention Could not find GriefPrevention please make sure you have it installed.");
+	public Version getVersion() {
+		return new SimpleVersion(1, 2, 1);
 	}
-	System.out.println("[CommandHelper] CHGriefPrevention: Initialized");
-    }
+
+	@Override
+	public void onShutdown() {
+		System.out.println("[CommandHelper] CHGriefPrevention: De-Initialized");
+	}
+
+	@Override
+	public void onStartup() {
+		try {
+			Static.checkPlugin("GriefPrevention", Target.UNKNOWN);
+		} catch (Exception e) {
+			System.out.println("[CommandHelper] CHGriefPrevention Could not find GriefPrevention please make sure you have it installed.");
+		}
+		System.out.println("[CommandHelper] CHGriefPrevention: Initialized");
+	}
 }
