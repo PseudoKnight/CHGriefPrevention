@@ -4,8 +4,11 @@ import com.laytonsmith.PureUtilities.SimpleVersion;
 import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.Target;
+import com.laytonsmith.core.exceptions.CRE.CREInvalidPluginException;
 import com.laytonsmith.core.extensions.AbstractExtension;
 import com.laytonsmith.core.extensions.MSExtension;
+
+import java.util.logging.Level;
 
 /**
  *
@@ -20,16 +23,17 @@ public class LifeCycle extends AbstractExtension {
 
 	@Override
 	public void onShutdown() {
-		System.out.println("[CommandHelper] CHGriefPrevention: De-Initialized");
+		Static.getLogger().log(Level.INFO,"CHGriefPrevention " + getVersion() + " unloaded.");
 	}
 
 	@Override
 	public void onStartup() {
 		try {
 			Static.checkPlugin("GriefPrevention", Target.UNKNOWN);
-		} catch (Exception e) {
-			System.out.println("[CommandHelper] CHGriefPrevention Could not find GriefPrevention please make sure you have it installed.");
+		} catch (CREInvalidPluginException e) {
+			Static.getLogger().log(Level.INFO,"CHGriefPrevention Could not find GriefPrevention."
+					+ " Please make sure you have it installed.");
 		}
-		System.out.println("[CommandHelper] CHGriefPrevention: Initialized");
+		Static.getLogger().log(Level.INFO,"CHGriefPrevention " + getVersion() + " loaded.");
 	}
 }
