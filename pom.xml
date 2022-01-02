@@ -17,7 +17,7 @@
   <repositories>
     <repository>
       <id>enginehub-repo</id>
-      <url>https://maven.enginehub.rog/repo/</url>
+      <url>https://maven.enginehub.org/repo/</url>
     </repository>
     <repository>
       <id>jitpack.io</id>
