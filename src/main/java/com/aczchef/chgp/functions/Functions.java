@@ -8,7 +8,6 @@ import com.laytonsmith.abstraction.bukkit.entities.BukkitMCPlayer;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.ObjectGenerator;
-import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CBoolean;
 import com.laytonsmith.core.constructs.CInt;
@@ -51,7 +50,6 @@ public class Functions {
 		}
 
 		public Mixed exec(Target tar, Environment env, Mixed... args) throws ConfigRuntimeException {
-			Static.checkPlugin("GriefPrevention", tar);
 			MCLocation l;
 			Claim c;
 
@@ -104,7 +102,6 @@ public class Functions {
 		}
 
 		public Mixed exec(Target tar, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			Static.checkPlugin("GriefPrevention", tar);
 			MCLocation l;
 			Claim c;
 
@@ -210,7 +207,6 @@ public class Functions {
 		}
 
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			Static.checkPlugin("GriefPrevention", t);
 			Player player;
 			CArray array;
 
