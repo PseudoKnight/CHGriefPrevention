@@ -16,6 +16,10 @@
   
   <repositories>
     <repository>
+      <id>spigot-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+    </repository>
+    <repository>
       <id>enginehub-repo</id>
       <url>https://maven.enginehub.org/repo/</url>
     </repository>
