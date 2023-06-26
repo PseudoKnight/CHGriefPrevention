@@ -2,7 +2,7 @@ A CommandHelper extension to access the GriefPrevention API on a Minecraft serve
 
 ## Downloads
 
-[CHGriefPrevention 2.0.0](https://letsbuild.net/jenkins/job/CHGriefPrevention/lastSuccessfulBuild/) is compatible with GP 16.18.x and CH 3.3.5 
+[CHGriefPrevention 2.0.0](https://letsbuild.net/jenkins/job/CHGriefPrevention/lastSuccessfulBuild/) is compatible with GP 16.18.x and CH 3.3.5  
 [CHGriefPrevention 1.2.2](https://letsbuild.net/jenkins/job/CHGriefPrevention/25/) is compatible with GP 16.17.x and CH 3.3.4 - 3.3.5
 
 ## Functions
