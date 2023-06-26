@@ -4,7 +4,6 @@ import com.aczchef.chgp.util.Util;
 import com.laytonsmith.abstraction.MCLocation;
 import com.laytonsmith.abstraction.MCPlayer;
 import com.laytonsmith.abstraction.bukkit.BukkitMCLocation;
-import com.laytonsmith.abstraction.bukkit.entities.BukkitMCPlayer;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.ObjectGenerator;
@@ -16,10 +15,7 @@ import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.CommandHelperEnvironment;
 import com.laytonsmith.core.environments.Environment;
-import com.laytonsmith.core.exceptions.CRE.CRECastException;
-import com.laytonsmith.core.exceptions.CRE.CREFormatException;
-import com.laytonsmith.core.exceptions.CRE.CREInvalidPluginException;
-import com.laytonsmith.core.exceptions.CRE.CREThrowable;
+import com.laytonsmith.core.exceptions.CRE.*;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
 import java.util.ArrayList;
@@ -63,9 +59,9 @@ public class Functions {
 			if (c == null) {
 				return CNull.NULL;
 			} else if (c.getID() == null) {
-				return new CInt(c.parent.getID().intValue(), tar);
+				return new CInt(c.parent.getID(), tar);
 			} else {
-				return new CInt(c.getID().intValue(), tar);
+				return new CInt(c.getID(), tar);
 			}
 		}
 
@@ -102,73 +98,46 @@ public class Functions {
 		}
 
 		public Mixed exec(Target tar, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCLocation l;
-			Claim c;
-
-			if (args[0] instanceof CArray) {
-				l = ObjectGenerator.GetGenerator().location(args[0], null, tar);
-				c = GriefPrevention.instance.dataStore.getClaimAt(Util.Location(l), true, null);
-			} else {
-				throw new CRECastException("Expected argument 1 of get_claim_info to be a location array.", tar);
-			}
+			MCLocation l = ObjectGenerator.GetGenerator().location(args[0], null, tar);
+			Claim c = GriefPrevention.instance.dataStore.getClaimAt(Util.Location(l), true, null);
 
 			if (c == null) {
 				return CNull.NULL;
 			}
 
-			CArray data = new CArray(tar);
+			CArray data = CArray.GetAssociativeArray(tar);
 			CArray corners = new CArray(tar);
 
 			MCLocation corner1 = Util.Location(c.getLesserBoundaryCorner());
 			MCLocation corner2 = Util.Location(c.getGreaterBoundaryCorner());
 
-			CArray Ccorner1 = ObjectGenerator.GetGenerator().location(corner1);
-			CArray Ccorner2 = ObjectGenerator.GetGenerator().location(corner2);
-
-			for (int i = 0; i <= 5; i++) {
-				Ccorner1.remove(new CInt(i, tar));
-			}
-
-			for (int i = 0; i <= 5; i++) {
-				Ccorner2.remove(new CInt(i, tar));
-			}
-
-			Ccorner1.remove(new CString("pitch", tar));
-			Ccorner1.remove(new CString("yaw", tar));
-			Ccorner2.remove(new CString("pitch", tar));
-			Ccorner2.remove(new CString("yaw", tar));
-
-			corners.push(Ccorner1, tar);
-			corners.push(Ccorner2, tar);
+			corners.push(ObjectGenerator.GetGenerator().location(corner1, false), tar);
+			corners.push(ObjectGenerator.GetGenerator().location(corner2, false), tar);
 
 			data.set("corners", corners, tar);
 			data.set("owner", new CString(c.getOwnerName(), tar), tar);
 			data.set("isadmin", CBoolean.get(c.isAdminClaim()), tar);
-			data.set("Height", new CInt(c.getHeight(), tar), tar);
 
 			if (c.getID() == null) {
-				ArrayList<String> builders = new ArrayList<String>(), containers = new ArrayList<String>(), accesors = new ArrayList<String>(), managers = new ArrayList<String>();
-				data.set("parentId", new CInt(c.parent.getID().intValue(), tar), tar);
-				c.getPermissions(builders, containers, accesors, managers);
-				CArray perms = Util.formPermissions(builders, containers, accesors, managers, tar);
-				data.set("permissions", perms, tar);
+				data.set("parentId", new CInt(c.parent.getID(), tar), tar);
 			} else {
-				data.set("id", new CInt(c.getID().intValue(), tar), tar);
+				data.set("id", new CInt(c.getID(), tar), tar);
 				CArray children = new CArray(tar);
 				for (int i = 0; i < c.children.size(); i++) {
 					CArray childData = new CArray(tar);
-
-					childData.set("Owner", new CString(c.children.get(i).getOwnerName(), tar), tar);
+					childData.set("owner", new CString(c.children.get(i).getOwnerName(), tar), tar);
 					children.push(childData, tar);
 				}
 				data.set("subclaims", children, tar);
-
-				ArrayList<String> builders = new ArrayList<String>(), containers = new ArrayList<String>(), accesors = new ArrayList<String>(), managers = new ArrayList<String>();
-
-				c.getPermissions(builders, containers, accesors, managers);
-				CArray perms = Util.formPermissions(builders, containers, accesors, managers, tar);
-				data.set("permissions", perms, tar);
 			}
+
+			ArrayList<String> builders = new ArrayList<>();
+			ArrayList<String> containers = new ArrayList<>();
+			ArrayList<String> accessors = new ArrayList<>();
+			ArrayList<String> managers = new ArrayList<>();
+			c.getPermissions(builders, containers, accessors, managers);
+			CArray perms = Util.formPermissions(builders, containers, accessors, managers, tar);
+			data.set("permissions", perms, tar);
 
 			return data;
 
@@ -183,7 +152,16 @@ public class Functions {
 		}
 
 		public String docs() {
-			return "array {location} Returns various data about a claim.";
+			return "array {location} Returns an array of data about a claim."
+					+ " The following keys are present in the array:"
+					+ " 'corners': (array) An array of two location arrays for each corner of the claim."
+					+ " 'owner': (string) The claim owner's name."
+					+ " 'isadmin': (boolean) Whether or not this is an administrative claim."
+					+ " 'permissions': (array) An associative array of arrays of permissions for 'builders',"
+					+ " 'containers', 'accessors', and 'managers'."
+					+ " 'id': (int) The id of the claim (doesn't exist for subclaims)."
+					+ " 'parentId': (int) The id of the parent claim (exists for subclaims only)."
+					+ " 'subclaims': (array) An array of subclaim arrays, which contain the key 'owner'.";
 		}
 
 		public MSVersion since() {
@@ -195,7 +173,7 @@ public class Functions {
 	public static class has_gp_buildperm extends AbstractFunction {
 
 		public Class<? extends CREThrowable>[] thrown() {
-			return null;
+			return new Class[]{ CREPlayerOfflineException.class, CREFormatException.class };
 		}
 
 		public boolean isRestricted() {
@@ -216,13 +194,19 @@ public class Functions {
 				if (args[0] instanceof CArray) {
 					array = (CArray) args[0];
 					MCPlayer p = environment.getEnv(CommandHelperEnvironment.class).GetPlayer();
-					player = ((BukkitMCPlayer) p)._Player();
+					if(p == null) {
+						throw new CREPlayerOfflineException("No player provided in this context.", t);
+					}
+					player = ((Player) p.getHandle());
 				} else {
 					throw new CREFormatException("Invalid arguments. Use [player,] location", t);
 				}
 			} else if (args.length == 2 && (args[0] instanceof CString) && (args[1] instanceof CArray)) {
 				player = Bukkit.getPlayer(args[0].val());
 				array = (CArray) args[1];
+				if(player == null) {
+					throw new CREPlayerOfflineException("Player is not online: " + args[0].val(), t);
+				}
 			} else {
 				throw new CREFormatException("Invalid arguments. Use [player,] location", t);
 			}
@@ -244,7 +228,7 @@ public class Functions {
 		}
 
 		public String getName() {
-			return getClass().getSimpleName();
+			return "has_gp_buildperm";
 		}
 
 		public Integer[] numArgs() {

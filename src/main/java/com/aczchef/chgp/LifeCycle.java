@@ -18,22 +18,22 @@ import java.util.logging.Level;
 public class LifeCycle extends AbstractExtension {
 
 	public Version getVersion() {
-		return new SimpleVersion(1, 2, 2);
+		return new SimpleVersion(2, 0, 0);
 	}
 
 	@Override
 	public void onShutdown() {
-		Static.getLogger().log(Level.INFO,"CHGriefPrevention " + getVersion() + " unloaded.");
+		Static.getLogger().info("CHGriefPrevention " + getVersion() + " unloaded.");
 	}
 
 	@Override
 	public void onStartup() {
 		try {
 			Static.checkPlugin("GriefPrevention", Target.UNKNOWN);
+			Static.getLogger().info("CHGriefPrevention " + getVersion() + " loaded.");
 		} catch (CREInvalidPluginException e) {
-			Static.getLogger().log(Level.INFO,"CHGriefPrevention Could not find GriefPrevention."
+			Static.getLogger().warning("CHGriefPrevention could not find GriefPrevention."
 					+ " Please make sure you have it installed.");
 		}
-		Static.getLogger().log(Level.INFO,"CHGriefPrevention " + getVersion() + " loaded.");
 	}
 }

@@ -4,11 +4,10 @@
 
   <groupId>com.brothercraft</groupId>
   <artifactId>CHGP</artifactId>
-  <version>1.2.2</version>
+  <version>2.0.0</version>
   <packaging>jar</packaging>
 
   <name>CHGP</name>
-  <url>http://maven.apache.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,18 +32,24 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.13.2</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <version>1.20.1-R0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.sk89q</groupId>
       <artifactId>commandhelper</artifactId>
-      <version>3.3.4-SNAPSHOT</version>
+      <version>3.3.5-SNAPSHOT</version>
+      <classifier>full</classifier>
     </dependency>
     <dependency>
       <groupId>com.github.TechFortress</groupId>
       <artifactId>GriefPrevention</artifactId>
-      <version>16.17.1</version>
+      <version>16.18.1</version>
     </dependency>
   </dependencies>
 
@@ -53,11 +58,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
+        <version>3.8.1</version>
         <configuration>
           <showDeprecation>true</showDeprecation>
-          <source>1.8</source>
-          <target>1.8</target>
+          <release>16</release>
           <compilerArgument>-XDignore.symbol.file</compilerArgument>
         </configuration>
       </plugin>
@@ -77,15 +81,13 @@
 
           </archive>
         </configuration>
-
-        <version>2.4</version>
+        <version>3.2.0</version>
       </plugin>
 
       <plugin>
         <groupId>org.bsc.maven</groupId>
         <artifactId>maven-processor-plugin</artifactId>
-        <version>2.2.4</version>
-
+        <version>5.0-jdk8-rc1</version>
         <executions>
           <execution>
             <id>process</id>
@@ -109,8 +111,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
-
+        <version>3.0.0</version>
         <executions>
           <execution>
             <id>cache-annotations</id>
