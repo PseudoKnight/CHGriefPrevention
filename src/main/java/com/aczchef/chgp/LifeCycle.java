@@ -8,8 +8,6 @@ import com.laytonsmith.core.exceptions.CRE.CREInvalidPluginException;
 import com.laytonsmith.core.extensions.AbstractExtension;
 import com.laytonsmith.core.extensions.MSExtension;
 
-import java.util.logging.Level;
-
 /**
  *
  * @author cgallarno
@@ -18,7 +16,7 @@ import java.util.logging.Level;
 public class LifeCycle extends AbstractExtension {
 
 	public Version getVersion() {
-		return new SimpleVersion(2, 0, 0);
+		return new SimpleVersion(2, 1, 0);
 	}
 
 	@Override

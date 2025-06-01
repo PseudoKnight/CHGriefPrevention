@@ -5,6 +5,7 @@ import com.laytonsmith.abstraction.MCLocation;
 import com.laytonsmith.abstraction.MCPlayer;
 import com.laytonsmith.abstraction.bukkit.BukkitMCLocation;
 import com.laytonsmith.annotations.api;
+import com.laytonsmith.core.ArgumentValidation;
 import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.constructs.CArray;
@@ -98,8 +99,13 @@ public class Functions {
 		}
 
 		public Mixed exec(Target tar, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCLocation l = ObjectGenerator.GetGenerator().location(args[0], null, tar);
-			Claim c = GriefPrevention.instance.dataStore.getClaimAt(Util.Location(l), true, null);
+			Claim c;
+			if(args[0] instanceof CArray) {
+				MCLocation l = ObjectGenerator.GetGenerator().location(args[0], null, tar);
+				c = GriefPrevention.instance.dataStore.getClaimAt(Util.Location(l), true, null);
+			} else {
+				c = GriefPrevention.instance.dataStore.getClaim(ArgumentValidation.getInt32(args[0], tar));
+			}
 
 			if (c == null) {
 				return CNull.NULL;
@@ -152,7 +158,7 @@ public class Functions {
 		}
 
 		public String docs() {
-			return "array {location} Returns an array of data about a claim."
+			return "array {location | id} Returns an array of data about a claim."
 					+ " The following keys are present in the array:"
 					+ " 'corners': (array) An array of two location arrays for each corner of the claim."
 					+ " 'owner': (string) The claim owner's name."
