@@ -104,7 +104,7 @@ public class Functions {
 				MCLocation l = ObjectGenerator.GetGenerator().location(args[0], null, tar);
 				c = GriefPrevention.instance.dataStore.getClaimAt(Util.Location(l), true, null);
 			} else {
-				c = GriefPrevention.instance.dataStore.getClaim(ArgumentValidation.getInt32(args[0], tar));
+				c = GriefPrevention.instance.dataStore.getClaim(ArgumentValidation.getInt(args[0], tar));
 			}
 
 			if (c == null) {
